@@ -1,3 +1,8 @@
+#
+# puppet report processor for zenoss, using xmlrpc. 
+# modeled after James Turnbull's processor for Zendesk
+# and his other processors at https://github.com/jamtur01/
+#
 require 'puppet'
 require 'json'
 require 'yaml'
@@ -46,10 +51,10 @@ Puppet::Reports.register_report(:zenoss) do
       end
       url = "http://#{ZENOSS_USER}:#{ZENOSS_PASS}@#{ZENOSS_SERVER}:#{ZENOSS_XMLRPC_PORT}/zport/dmd/DeviceLoader"
       server = XMLRPC::Client.new2( url )
-      event = {'device' => "u5_m5.sf.verticalresponse.com", 
+      event = {'device' => "#{self.host}", 
                'eventclass' => "#{ZENOSS_EVENTCLASS}", 
                'severity' => 2, 
-               'summary' => "Puppet run for #{self.host} failed at #{Time.now.asctime} #{output.join("\n")}" }
+               'summary' => "Puppet run for #{self.host} failed at #{Time.now.asctime} : #{output.join("\n")}" }
       ok, param = server.call2('sendEvent', event) 
       Puppet.err "Error sending Zenoss event: #{param}" unless ok
     end
