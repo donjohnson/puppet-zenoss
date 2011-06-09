@@ -1,0 +1,6 @@
+---
+:zenoss_user: 'user'
+:zenoss_pass: 'pass'
+:zenoss_server: 'zenoss'
+:zenoss_xmlrpc_port: 8081
+:zenoss_eventclass: '/Perf/Snmp'
