@@ -4,7 +4,6 @@
 # and his other processors at https://github.com/jamtur01/
 #
 require 'puppet'
-require 'json'
 require 'yaml'
 require 'pp'
 
@@ -24,6 +23,7 @@ Puppet::Reports.register_report(:zenoss) do
   ZENOSS_SERVER      = config[:zenoss_server]
   ZENOSS_XMLRPC_PORT = config[:zenoss_xmlrpc_port]
   ZENOSS_EVENTCLASS  = config[:zenoss_eventclass]
+  ZENOSS_COMPONENT   = config[:zenoss_component]
 
 
   desc <<-DESC
@@ -42,6 +42,7 @@ Puppet::Reports.register_report(:zenoss) do
       end
     end
   
+    #note: in 2.6.5 and higher, you can scrub the above block and replace the following line with: if self.status == 'failed'
     if failure == true
       Puppet.debug "Creating Zenoss event for failed run on #{self.host}."
       event = {}
@@ -52,6 +53,7 @@ Puppet::Reports.register_report(:zenoss) do
       url = "http://#{ZENOSS_USER}:#{ZENOSS_PASS}@#{ZENOSS_SERVER}:#{ZENOSS_XMLRPC_PORT}/zport/dmd/DeviceLoader"
       server = XMLRPC::Client.new2( url )
       event = {'device' => "#{self.host}", 
+               'component' => "#{ZENOSS_COMPONENT}",
                'eventclass' => "#{ZENOSS_EVENTCLASS}", 
                'severity' => 2, 
                'summary' => "Puppet run for #{self.host} failed at #{Time.now.asctime} : #{output.join("\n")}" }
