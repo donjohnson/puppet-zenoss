@@ -44,7 +44,10 @@ Author
 
 Don Johnson <auderive@gmail.com>
 
-Based on [puppet-zendesk](https://github.com/jamtur01/puppet-zendesk) by James Turnbull <james@lovedthanlost.net>
+Acknowledgments
+------
+
+Based on [puppet-zendesk](https://github.com/jamtur01/puppet-zendesk) by James Turnbull <james@lovedthanlost.net>, aka @kartar on Twitter. Thanks James!
 
 License
 -------
